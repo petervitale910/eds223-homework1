@@ -41,33 +41,55 @@ sf_bay_ej = sf_bay_ej %>%
 
 ```
 
+
 Now I am going to start by plotting the South Bay with some population numbers
 
 ```{r}
-#| echo: FALSE
 bbox_main <- st_bbox(c(xmin = -122.64 , xmax = -121.59 , ymax = 38.2 , ymin = 37.19), crs = 4326) # This sets the bounding box and crs which aid in the view of the San Francisco Bay 
 		
 
 # I don't love this map without the iconic bay, so I am going to add the water
 
 sf_bay_water <- st_read(dsn =here('data', 'sf-bay-shape', 'region_water_area.shp'))
-
-
+  
+  
 tm_shape(sf_bay_ej, bbox = bbox_main) +
   tm_crs(4326) +
-  tm_polygons(fill = 'D2_PWDIS',
-             fill.scale = tm_scale(values = c('#E1DABD', '#ABC798', '#E6983F', '#A0185A')),
+  tm_polygons(fill = 'P_D2_PWDIS',
+             fill.scale = tm_scale(values = c('#E1DABD',
+                                              '#ABC798',
+                                              '#FFC4EB',
+                                              '#E6983F',
+                                              '#A0185A',
+                                              '#35012C'),
+                                   breaks = c(0,50,80,90,95,100)),
              lty = 'blank',
-             fill.legend = tm_legend(title = 'Wastewater '))+
+             fill.legend = tm_legend(title = 'Wastewater Discharge (Percentile)', reverse = TRUE))+
   tm_layout(bg.color = 'blue')+
+  tm_graticules()+
 tm_shape(sf_bay_water)+
   tm_polygons(fill = 'blue',
-              lty = 'blank')+
-  tm_graticules()
-  
-
+              lty = 'blank')
   
 ```
 
+
+```{r}
+tm_shape(sf_bay_ej, bbox = bbox_main) +
+  tm_crs(4326) +
+  tm_polygons(fill = 'LOWINCPCT',
+             fill.scale = tm_scale(values = c('#E1DABD',
+                                              '#ABC798',
+                                              '#E6983F',
+                                              '#A0185A',
+                                              '#35012C')),
+             lty = 'blank',
+             fill.legend = tm_legend(title = 'Percent Low Income', reverse = TRUE))+
+  tm_layout(bg.color = 'blue')+
+  tm_graticules()+
+tm_shape(sf_bay_water)+
+  tm_polygons(fill = 'blue',
+              lty = 'blank')
+```
 
 
