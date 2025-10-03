@@ -1,0 +1,69 @@
+---
+title: "Homework1"
+format: html
+editor: visual
+---
+# Assesing: 
+## Peter Vitale
+
+In this project I hope to practice geo-spatial data visualization by:
+
+ -  A
+ -  B
+
+I'm going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay 
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+#First, im going to load the neccesary packages using p_load
+pacman::p_load('tidyverse', 'sf', 'here', 'tmap')
+
+
+# read in geodatabase of EJScreen data at the Census Block Group level
+ejscreen <- sf::st_read(here::here("data", "ejscreen","EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb")) 
+
+# filter to a state you are interested in
+california <- ejscreen %>%
+  dplyr::filter(ST_ABBREV == "CA") 
+
+# filter to San Francisco Bay 
+sf_bay_ej <- ejscreen %>%
+  dplyr::filter(CNTY_NAME %in% c("Santa Clara County", 'Alameda County', 'Contra Costa County' , 'Marin County', 'Napa County', 'San Francisco County' , 'San Mateo County', 'Solano County', 'Sonoma County'))
+
+# find the average values for all variables within counties
+california_counties <- aggregate(california, by = list(california$CNTY_NAME), FUN = mean)
+
+# Drop NA's on the Wastewater column of the sf_bay_ej data
+sf_bay_ej = sf_bay_ej %>% 
+  drop_na('D2_PWDIS')
+
+
+```
+
+Now I am going to start by plotting the South Bay with some population numbers
+
+```{r}
+#| echo: FALSE
+bbox_main <- st_bbox(c(xmin = -122.64 , xmax = -121.59 , ymax = 38.2 , ymin = 37.19), crs = 4326) # This sets the bounding box and crs which aid in the view of the San Francisco Bay 
+		
+
+# I don't love this map without the iconic bay, so I am going to add the water
+
+sf_bay_water <- st_read(dsn =here('data', 'sf-bay-shape', 'region_water_area.shp'))
+
+
+tm_shape(sf_bay_ej, bbox = bbox_main) +
+  tm_crs(4326) +
+  tm_polygons(fill = 'D2_PWDIS',
+             fill.scale = tm_scale(values = 'brewer.Oranges'),
+             lty = 'blank')+
+  tm_layout(bg.color = 'blue')+
+tm_shape(sf_bay_water)+
+  tm_polygons(fill = 'blue')
+
+  
+```
+
+
+
