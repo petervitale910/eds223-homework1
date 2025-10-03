@@ -10,9 +10,14 @@ This repo contains :
    -  Files 
  
 # Data access
-. 
 
 # Author/ Contributors
 - Peter Vitale (Author)
 
 # References 
+. Cite NOAA DATA
+- CIte epa data 
+- Add compass
+- Add lat long
+- Add gridlines
+- add socio-economic status

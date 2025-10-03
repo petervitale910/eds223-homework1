@@ -56,15 +56,11 @@ sf_bay_water <- st_read(dsn =here('data', 'sf-bay-shape', 'region_water_area.shp
 tm_shape(sf_bay_ej, bbox = bbox_main) +
   tm_crs(4326) +
   tm_polygons(fill = 'D2_PWDIS',
-             fill.scale = tm_scale(values = c('#E1DABD', '#ABC798', '#E6983F', '#A0185A')),
-             lty = 'blank',
-             fill.legend = tm_legend(title = 'Wastewater '))+
+             fill.scale = tm_scale(values = 'brewer.Oranges'),
+             lty = 'blank')+
   tm_layout(bg.color = 'blue')+
 tm_shape(sf_bay_water)+
-  tm_polygons(fill = 'blue',
-              lty = 'blank')+
-  tm_graticules()
-  
+  tm_polygons(fill = 'blue')
 
   
 ```
