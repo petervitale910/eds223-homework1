@@ -3,15 +3,17 @@ title: "Homework1"
 format: html
 editor: visual
 ---
-# Assesing: 
+
+# Assesing Wastewater discharge in low income communities:
+
 ## Peter Vitale
 
 In this project I hope to practice geo-spatial data visualization by:
 
- -  A
- -  B
+-   Crating a clear and visually stimulating plot of the San Francisco Bay
+-   Tying plots to an environmental injustice
 
-I'm going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay 
+I'm going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay
 
 ```{r}
 #| message: FALSE
@@ -31,8 +33,6 @@ california <- ejscreen %>%
 sf_bay_ej <- ejscreen %>%
   dplyr::filter(CNTY_NAME %in% c("Santa Clara County", 'Alameda County', 'Contra Costa County' , 'Marin County', 'Napa County', 'San Francisco County' , 'San Mateo County', 'Solano County', 'Sonoma County'))
 
-# find the average values for all variables within counties
-california_counties <- aggregate(california, by = list(california$CNTY_NAME), FUN = mean)
 
 # Drop NA's on the Wastewater column of the sf_bay_ej data
 sf_bay_ej = sf_bay_ej %>% 
@@ -41,10 +41,10 @@ sf_bay_ej = sf_bay_ej %>%
 
 ```
 
-
-Now I am going to start by plotting the South Bay with some population numbers
+Now I am going to start by plotting the South Bay Wastewater discharge 
 
 ```{r}
+#| warning: FALSE
 bbox_main <- st_bbox(c(xmin = -122.64 , xmax = -121.59 , ymax = 38.2 , ymin = 37.19), crs = 4326) # This sets the bounding box and crs which aid in the view of the San Francisco Bay 
 		
 
@@ -53,8 +53,8 @@ bbox_main <- st_bbox(c(xmin = -122.64 , xmax = -121.59 , ymax = 38.2 , ymin = 37
 sf_bay_water <- st_read(dsn =here('data', 'sf-bay-shape', 'region_water_area.shp'))
   
   
-tm_shape(sf_bay_ej, bbox = bbox_main) +
-  tm_crs(4326) +
+tm_shape(sf_bay_ej, bbox = bbox_main) + #We start with the base: the sf bay 
+  tm_crs(4326) + #What view we want of the map 
   tm_polygons(fill = 'P_D2_PWDIS',
              fill.scale = tm_scale(values = c('#E1DABD',
                                               '#ABC798',
@@ -62,34 +62,48 @@ tm_shape(sf_bay_ej, bbox = bbox_main) +
                                               '#E6983F',
                                               '#A0185A',
                                               '#35012C'),
-                                   breaks = c(0,50,80,90,95,100)),
-             lty = 'blank',
-             fill.legend = tm_legend(title = 'Wastewater Discharge (Percentile)', reverse = TRUE))+
-  tm_layout(bg.color = 'blue')+
-  tm_graticules()+
-tm_shape(sf_bay_water)+
+                                   breaks = c(0,50,80,90,95,100)), #This sets up my wastewater color scale and fills in the percentiles of wastewaters
+             lty = 'blank', #Getting rid of the lines
+             fill.legend = tm_legend(title = 'Wastewater\nDischarge\n(Percentile)', 
+                                     reverse = TRUE, 
+                                     width = 8,
+                                     height = 9,
+                                     title.fontfamily = 'monospace'))+ #Legend formatting
+  tm_layout(bg.color = 'blue',
+            legend.position = c('right','center'),
+            legend.title.size = .8)+ #Background color and legend size + position
+  tm_graticules()+ #this adds gridlines
+tm_shape(sf_bay_water)+ #Lets get our SF bay water data in there
   tm_polygons(fill = 'blue',
-              lty = 'blank')
+              lty = 'blank')+
+  tm_title('San Francisco Bay: Wastewater Discharge') #And cap it off with a title
   
 ```
 
-
 ```{r}
-tm_shape(sf_bay_ej, bbox = bbox_main) +
+#| warning: FALSE
+tm_shape(sf_bay_ej, bbox = bbox_main) + 
   tm_crs(4326) +
-  tm_polygons(fill = 'LOWINCPCT',
+  tm_polygons(fill = 'LOWINCPCT', #This time im using percent income instead of wastewater
              fill.scale = tm_scale(values = c('#E1DABD',
                                               '#ABC798',
                                               '#E6983F',
                                               '#A0185A',
                                               '#35012C')),
              lty = 'blank',
-             fill.legend = tm_legend(title = 'Percent Low Income', reverse = TRUE))+
-  tm_layout(bg.color = 'blue')+
+             fill.legend = tm_legend(title = 'Percent Low\nIncome', 
+                                     reverse = TRUE,
+                                     width = 8,
+                                     height = 9,
+                                     title.fontfamily = 'monospace'))+
+  tm_layout(bg.color = 'blue',
+            legend.position = c('right','center'),
+            legend.title.size = .8)+
   tm_graticules()+
 tm_shape(sf_bay_water)+
   tm_polygons(fill = 'blue',
-              lty = 'blank')
+              lty = 'blank')+
+tm_title('San Francisco Bay: Percentage Low Income')
 ```
 
-
+The San Francisco Bay has [37 wastewater](https://www.sfpuc.gov/about-us/our-systems/sewer-system) treatment plants which run into the Bay. The San Francisco Bay also has an increasingly high level of wealth disparity, with a gap of [$126,800 between Silicon Valley’s highest and lowest earners](https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/). I decided to compare where the wastewater was being dumped, and the percentage of the population that is low income. In the maps you can see some peaks in wastewater in San Jose and San Pablo. While the percentage of low income is not extremely high in these communities, it still peaks where we see wastewater being discharged. The low income plot must also be viewed with the caveat that the data classifies low income as anyone below \$52,992 per year. However, the disparity in the San Francisco Bay makes it so some counties people making even [\$100,000](https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income) being considered low income. If the data had included an adjusted low income level, the pattern of those in low income communities having their access to nature reduced. 
