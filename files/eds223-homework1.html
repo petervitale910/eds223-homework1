@@ -134,11 +134,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>I’m going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First, im going to load the neccesary packages using p_load</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, I'm going to load the necessary packages using p_load</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(<span class="st">'tidyverse'</span>, <span class="st">'sf'</span>, <span class="st">'here'</span>, <span class="st">'tmap'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read in geodatabase of EJScreen data at the Census Block Group level</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in geodatabase of EJScreen data at the Census Block Group level</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ejscreen <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"ejscreen"</span>,</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -152,11 +152,11 @@ Dimension:     XY
 Bounding box:  xmin: -19951910 ymin: -1617130 xmax: 16259830 ymax: 11554350
 Projected CRS: WGS 84 / Pseudo-Mercator</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to a state you are interested in</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to a state you are interested in</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>california <span class="ot">&lt;-</span> ejscreen <span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(ST_ABBREV <span class="sc">==</span> <span class="st">"CA"</span>) </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to San Francisco Bay </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to San Francisco Bay </span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sf_bay_ej <span class="ot">&lt;-</span> ejscreen <span class="sc">%&gt;%</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(CNTY_NAME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Santa Clara County"</span>, </span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">'Alameda County'</span>, </span>
@@ -199,8 +199,8 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> <span class="co">#We start with the base: the sf bay </span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span> <span class="co">#What view we want of the map </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> <span class="co"># We start with the base: the sf bay </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span> <span class="co"># What view we want of the map </span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'P_D2_PWDIS'</span>,</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
@@ -208,21 +208,21 @@ Geodetic CRS:  WGS 84</code></pre>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#A0185A'</span>,</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#35012C'</span>),</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="dv">80</span>,<span class="dv">90</span>,<span class="dv">95</span>,<span class="dv">100</span>)), <span class="co">#This sets up my wastewater color scale and fills in the percentiles of wastewaters</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>, <span class="co">#Getting rid of the lines</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="dv">80</span>,<span class="dv">90</span>,<span class="dv">95</span>,<span class="dv">100</span>)), <span class="co"># This sets up my wastewater color scale and fills in the percentiles of wastewaters</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>, <span class="co"># Getting rid of the lines</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">title =</span> <span class="st">'Wastewater</span><span class="sc">\n</span><span class="st">Discharge</span><span class="sc">\n</span><span class="st">(Percentile)'</span>, </span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">reverse =</span> <span class="cn">TRUE</span>, </span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">width =</span> <span class="dv">8</span>,</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">height =</span> <span class="dv">9</span>,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span> <span class="co">#Legend formatting</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span> <span class="co"># Legend formatting</span></span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">'blue'</span>,</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">'right'</span>,<span class="st">'center'</span>),</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span> <span class="co">#Background color and legend size + position</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span> <span class="co">#this adds gridlines</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span> <span class="co">#Lets get our SF bay water data in there</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span> <span class="co"># Background color and legend size + position</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span> <span class="co"># This adds gridlines</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span> <span class="co"># Lets get our SF bay water data in there</span></span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'blue'</span>,</span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="st">'blank'</span>)<span class="sc">+</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Wastewater Discharge'</span>) <span class="co">#And cap it off with a title</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Wastewater Discharge'</span>) <span class="co"># And cap it off with a title</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="eds223-homework1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -230,7 +230,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'LOWINCPCT'</span>, <span class="co">#This time im using percent income instead of wastewater</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'LOWINCPCT'</span>, <span class="co"># This time im using percent income instead of wastewater</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
@@ -261,7 +261,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <h1>References</h1>
 <section id="data" class="level4">
 <h4 class="anchored" data-anchor-id="data">Data</h4>
-<p>San Francisco bay shape: https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore (public)</p>
+<p><a href="https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore">San Francisco bay shape:</a> (public)</p>
 <p>Environmental Justice screen: U.S. Environmental Protection Agency (EPA), 2023. EJScreen Technical Documentation.</p>
 </section>
 <section id="suplimental-resources" class="level4">

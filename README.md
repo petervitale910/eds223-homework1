@@ -27,8 +27,7 @@ All data was publicly available and cited. For data use please see references se
 
 
 
-San Francisco bay shape: 
- https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore (public)
+[San Francisco bay shape:](https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore) (public)
 
 Environmental Justice screen:
 U.S. Environmental Protection Agency (EPA), 2023. EJScreen Technical Documentation. 
