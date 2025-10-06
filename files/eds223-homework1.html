@@ -171,22 +171,13 @@ Projected CRS: WGS 84 / Pseudo-Mercator</code></pre>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop NA's on the Wastewater column of the sf_bay_ej data</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>sf_bay_ej <span class="ot">=</span> sf_bay_ej <span class="sc">%&gt;%</span> </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(<span class="st">'D2_PWDIS'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Now I am going to start by plotting the South Bay Wastewater discharge</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bbox_main <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="fl">122.64</span> , </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">xmax =</span> <span class="sc">-</span><span class="fl">121.59</span> , </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ymax =</span> <span class="fl">38.2</span> , </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ymin =</span> <span class="fl">37.19</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">crs =</span> <span class="dv">4326</span>) <span class="co"># This sets the bounding box and crs which aid in the view of the San Francisco Bay </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># I don't love this map without the iconic bay, so I am going to add the water</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>sf_bay_water <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span><span class="fu">here</span>(<span class="st">'data'</span>, </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">'sf-bay-shape'</span>, </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">'region_water_area.shp'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(<span class="st">'D2_PWDIS'</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># I don't love this map without the iconic bay, so I am going to add the water</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>sf_bay_water <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span><span class="fu">here</span>(<span class="st">'data'</span>, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">'sf-bay-shape'</span>, </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">'region_water_area.shp'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `region_water_area' from data source 
   `/Users/petervitale/MEDS/EDS-223/eds223-homework1/data/sf-bay-shape/region_water_area.shp' 
@@ -197,62 +188,87 @@ Dimension:     XY
 Bounding box:  xmin: -123.6325 ymin: 37.00103 xmax: -121.2521 ymax: 38.85491
 Geodetic CRS:  WGS 84</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> <span class="co">#We start with the base: the sf bay </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span> <span class="co">#What view we want of the map </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'P_D2_PWDIS'</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#FFC4EB'</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#A0185A'</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#35012C'</span>),</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="dv">80</span>,<span class="dv">90</span>,<span class="dv">95</span>,<span class="dv">100</span>)), <span class="co">#This sets up my wastewater color scale and fills in the percentiles of wastewaters</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>, <span class="co">#Getting rid of the lines</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">title =</span> <span class="st">'Wastewater</span><span class="sc">\n</span><span class="st">Discharge</span><span class="sc">\n</span><span class="st">(Percentile)'</span>, </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">reverse =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">width =</span> <span class="dv">8</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">height =</span> <span class="dv">9</span>,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span> <span class="co">#Legend formatting</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">'blue'</span>,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">'right'</span>,<span class="st">'center'</span>),</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span> <span class="co">#Background color and legend size + position</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span> <span class="co">#this adds gridlines</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span> <span class="co">#Lets get our SF bay water data in there</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'blue'</span>,</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="st">'blank'</span>)<span class="sc">+</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Wastewater Discharge'</span>) <span class="co">#And cap it off with a title</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now I am going to start by plotting the South Bay Wastewater discharge</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>bbox_main <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="fl">122.64</span> , </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">xmax =</span> <span class="sc">-</span><span class="fl">121.59</span> , </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ymax =</span> <span class="fl">38.2</span> , </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ymin =</span> <span class="fl">37.19</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">crs =</span> <span class="dv">4326</span>) <span class="co"># This sets the bounding box and crs which aid in the view of the San Francisco Bay </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> <span class="co">#We start with the base: the sf bay </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span> <span class="co">#What view we want of the map </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'P_D2_PWDIS'</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#FFC4EB'</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#A0185A'</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#35012C'</span>),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="dv">80</span>,<span class="dv">90</span>,<span class="dv">95</span>,<span class="dv">100</span>)), <span class="co">#This sets up my wastewater color scale and fills in the percentiles of wastewaters</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>, <span class="co">#Getting rid of the lines</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">title =</span> <span class="st">'Wastewater</span><span class="sc">\n</span><span class="st">Discharge</span><span class="sc">\n</span><span class="st">(Percentile)'</span>, </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">reverse =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">height =</span> <span class="dv">9</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span> <span class="co">#Legend formatting</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">'blue'</span>,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">'right'</span>,<span class="st">'center'</span>),</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span> <span class="co">#Background color and legend size + position</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span> <span class="co">#this adds gridlines</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span> <span class="co">#Lets get our SF bay water data in there</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'blue'</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="st">'blank'</span>)<span class="sc">+</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Wastewater Discharge'</span>) <span class="co">#And cap it off with a title</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="eds223-homework1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'LOWINCPCT'</span>, <span class="co">#This time im using percent income instead of wastewater</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#A0185A'</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#35012C'</span>)),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">title =</span> <span class="st">'Percent Low</span><span class="sc">\n</span><span class="st">Income'</span>, </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">reverse =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">width =</span> <span class="dv">8</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">height =</span> <span class="dv">9</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">'blue'</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">'right'</span>,<span class="st">'center'</span>),</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'blue'</span>,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="st">'blank'</span>)<span class="sc">+</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Percentage Low Income'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_ej, <span class="at">bbox =</span> bbox_main) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_crs</span>(<span class="dv">4326</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'LOWINCPCT'</span>, <span class="co">#This time im using percent income instead of wastewater</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.scale =</span> <span class="fu">tm_scale</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'#E1DABD'</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#ABC798'</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#E6983F'</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#A0185A'</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'#35012C'</span>)),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">'blank'</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill.legend =</span> <span class="fu">tm_legend</span>(<span class="at">title =</span> <span class="st">'Percent Low</span><span class="sc">\n</span><span class="st">Income'</span>, </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">reverse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">width =</span> <span class="dv">8</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">height =</span> <span class="dv">9</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">title.fontfamily =</span> <span class="st">'monospace'</span>))<span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">bg.color =</span> <span class="st">'blue'</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">'right'</span>,<span class="st">'center'</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title.size =</span> .<span class="dv">8</span>)<span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_graticules</span>()<span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sf_bay_water)<span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">'blue'</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="st">'blank'</span>)<span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_title</span>(<span class="st">'San Francisco Bay: Percentage Low Income'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="eds223-homework1_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The San Francisco Bay has <a href="https://www.sfpuc.gov/about-us/our-systems/sewer-system">37 wastewater</a> treatment plants which run into the Bay. The San Francisco Bay also has an increasingly high level of wealth disparity, with a gap of <a href="https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/">$126,800 between Silicon Valley’s highest and lowest earners</a>. I decided to compare where the wastewater was being dumped, and the percentage of the population that is low income. In the maps you can see some peaks in wastewater in San Jose and San Pablo. While the percentage of low income is not extremely high in these communities, it still peaks where we see wastewater being discharged. The low income plot must also be viewed with the caveat that the data classifies low income as anyone below $52,992 per year. However, the disparity in the San Francisco Bay makes it so some counties people making even <a href="https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income">$100,000</a> being considered low income. If the data had included an adjusted low income level, the pattern of those in low income communities having their access to nature reduced.</p>
+</section>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<section id="data" class="level4">
+<h4 class="anchored" data-anchor-id="data">Data</h4>
+<p>San Francisco bay shape: https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore (public)</p>
+<p>Environmental Justice screen: U.S. Environmental Protection Agency (EPA), 2023. EJScreen Technical Documentation.</p>
+</section>
+<section id="suplimental-resources" class="level4">
+<h4 class="anchored" data-anchor-id="suplimental-resources">Suplimental resources</h4>
+<p><a href="https://www.sfpuc.gov/about-us/our-systems/sewer-system">San Francisco Public Utilities Commission</a></p>
+<p><a href="https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/">KRON5 on income inequality in the bay</a></p>
+<p><a href="https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income">KTVU on low income in counties in the bay</a></p>
 </section>
 </section>
 

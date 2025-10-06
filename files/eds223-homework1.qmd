@@ -2,6 +2,9 @@
 title: "Homework1"
 format: html
 editor: visual
+execute: 
+  message: false
+  warning: false
 ---
 
 # Assesing Wastewater discharge in low income communities:
@@ -16,8 +19,8 @@ In this project I hope to practice geo-spatial data visualization by:
 I'm going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay
 
 ```{r}
-#| message: FALSE
-#| warning: FALSE
+#| message: false
+#| warning: false
 #First, im going to load the neccesary packages using p_load
 pacman::p_load('tidyverse', 'sf', 'here', 'tmap')
 
@@ -48,25 +51,23 @@ sf_bay_ej <- ejscreen %>%
 sf_bay_ej = sf_bay_ej %>% 
   drop_na('D2_PWDIS')
 
+# I don't love this map without the iconic bay, so I am going to add the water
 
+sf_bay_water <- st_read(dsn =here('data', 
+                                  'sf-bay-shape', 
+                                  'region_water_area.shp'))
 ```
 
 Now I am going to start by plotting the South Bay Wastewater discharge
 
 ```{r}
-#| warning: FALSE
+#| warning: false
 bbox_main <- st_bbox(c(xmin = -122.64 , 
                        xmax = -121.59 , 
                        ymax = 38.2 , 
                        ymin = 37.19),
                      crs = 4326) # This sets the bounding box and crs which aid in the view of the San Francisco Bay 
 		
-
-# I don't love this map without the iconic bay, so I am going to add the water
-
-sf_bay_water <- st_read(dsn =here('data', 
-                                  'sf-bay-shape', 
-                                  'region_water_area.shp'))
   
   
 tm_shape(sf_bay_ej, bbox = bbox_main) + #We start with the base: the sf bay 
@@ -123,3 +124,29 @@ tm_title('San Francisco Bay: Percentage Low Income')
 ```
 
 The San Francisco Bay has [37 wastewater](https://www.sfpuc.gov/about-us/our-systems/sewer-system) treatment plants which run into the Bay. The San Francisco Bay also has an increasingly high level of wealth disparity, with a gap of [\$126,800 between Silicon Valley’s highest and lowest earners](https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/). I decided to compare where the wastewater was being dumped, and the percentage of the population that is low income. In the maps you can see some peaks in wastewater in San Jose and San Pablo. While the percentage of low income is not extremely high in these communities, it still peaks where we see wastewater being discharged. The low income plot must also be viewed with the caveat that the data classifies low income as anyone below \$52,992 per year. However, the disparity in the San Francisco Bay makes it so some counties people making even [\$100,000](https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income) being considered low income. If the data had included an adjusted low income level, the pattern of those in low income communities having their access to nature reduced.
+
+# References
+
+#### Data 
+
+
+San Francisco bay shape: 
+ https://opendata.mtc.ca.gov/datasets/san-francisco-bay-region-water-area/explore (public)
+
+Environmental Justice screen:
+U.S. Environmental Protection Agency (EPA), 2023. EJScreen Technical Documentation. 
+
+
+
+#### Suplimental resources
+
+
+
+[San Francisco Public Utilities Commission](https://www.sfpuc.gov/about-us/our-systems/sewer-system)
+
+[KRON5 on income inequality in the bay](https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/)
+
+[KTVU on low income in counties in the bay](https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income)
+
+
+
