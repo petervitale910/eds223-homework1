@@ -13,8 +13,8 @@ execute:
 
 In this project I hope to practice geo-spatial data visualization by:
 
--   Crating a clear and visually stimulating plot of the San Francisco Bay
--   Tying plots to an environmental injustice
+-   Creating a clear and visually stimulating plot of the San Francisco Bay
+-   Tying together plots of wastewater discharge and low income communities
 
 I'm going to start by reading in the data and zoom in on the area I am focused on: South San Francisco Bay
 
@@ -123,7 +123,7 @@ tm_shape(sf_bay_water)+
 tm_title('San Francisco Bay: Percentage Low Income')
 ```
 
-The San Francisco Bay has [37 wastewater](https://www.sfpuc.gov/about-us/our-systems/sewer-system) treatment plants which run into the Bay. The San Francisco Bay also has an increasingly high level of wealth disparity, with a gap of [\$126,800 between Silicon Valley’s highest and lowest earners](https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/). I decided to compare where the wastewater was being dumped, and the percentage of the population that is low income. In the maps you can see some peaks in wastewater in San Jose and San Pablo. While the percentage of low income is not extremely high in these communities, it still peaks where we see wastewater being discharged. The low income plot must also be viewed with the caveat that the data classifies low income as anyone below \$52,992 per year. However, the disparity in the San Francisco Bay makes it so some counties people making even [\$100,000](https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income) being considered low income. If the data had included an adjusted low income level, the pattern of those in low income communities having their access to nature reduced.
+The San Francisco Bay has [37 wastewater](https://www.sfpuc.gov/about-us/our-systems/sewer-system) treatment plants which run into the bay. The San Francisco Bay also has an increasingly high level of wealth disparity, with a gap of [\$126,800 between Silicon Valley’s highest and lowest earners](https://www.kron4.com/news/bay-area/silicon-valley-income-inequality/). I decided to compare where the wastewater was being dumped and the percentage of the population that is low income, in an attempt to ascertain if access to green spaces is reduced in low income areas. In the maps you can see some peaks in wastewater in San Jose and San Pablo. While the percentage of low income is not extremely high in these communities, it still peaks where we see wastewater being discharged. The low income plot must also be viewed with the caveat that the data classifies low income as anyone below \$52,992 per year. However, the disparity in the San Francisco Bay makes it so some counties people making even [\$100,000](https://www.ktvu.com/news/all-bay-area-counties-earning-six-figures-can-still-be-considered-low-income) being considered low income. If the data had included an adjusted low income level, the pattern of those in low income communities having their access to nature reduced would become more apparent. 
 
 # References
 
